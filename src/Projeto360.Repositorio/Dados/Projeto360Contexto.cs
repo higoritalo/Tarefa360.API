@@ -12,6 +12,8 @@ public class Projeto360Contexto : DbContext
 
     public DbSet<Usuario> Usuarios => Set<Usuario>();
 
+    public DbSet<Projeto> Projetos { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
@@ -48,6 +50,21 @@ public class Projeto360Contexto : DbContext
 
             entidade.Property(u => u.TipoUsuario)
                 .IsRequired();
+        });
+
+        modelBuilder.Entity<Projeto>(entidade =>
+        {
+            entidade.ToTable("Projetos");
+
+            entidade.HasKey(p => p.Id);
+
+            entidade.Property(p => p.Nome)
+                .IsRequired()
+                .HasMaxLength(100);
+
+            entidade.Property(p => p.Descricao)
+                .IsRequired(false)
+                .HasMaxLength(500);
         });
     }
 }

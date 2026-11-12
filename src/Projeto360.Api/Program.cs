@@ -36,13 +36,17 @@ builder.Services.AddDbContext<Projeto360Contexto>(opcoes =>
     opcoes.UseSqlite($"Data Source={caminhoBanco}")
 );
 
-// Injeção de dependência: interfaces e implementações.
+// Injeção de dependência: tarefas.
 builder.Services.AddScoped<ITarefaRepositorio, TarefaRepositorio>();
 builder.Services.AddScoped<ITarefaServico, TarefaServico>();
 
-// Serviços de usuários.
+// Injeção de dependência: usuários.
 builder.Services.AddScoped<IUsuarioRepositorio, UsuarioRepositorio>();
 builder.Services.AddScoped<IUsuarioServico, UsuarioServico>();
+
+// Injeção de dependência: projetos.
+builder.Services.AddScoped<IProjetoRepositorio, ProjetoRepositorio>();
+builder.Services.AddScoped<IProjetoServico, ProjetoServico>();
 
 var app = builder.Build();
 
@@ -61,6 +65,12 @@ using (var escopo = app.Services.CreateScope())
             Email TEXT NOT NULL,
             SenhaHash TEXT NOT NULL,
             TipoUsuario INTEGER NOT NULL
+        );
+
+        CREATE TABLE IF NOT EXISTS Projetos (
+            Id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+            Nome TEXT NOT NULL,
+            Descricao TEXT NULL
         );
     ");
 }
